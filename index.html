@@ -215,7 +215,7 @@ canvas{max-height:165px;}
     <button class="btn-launch" id="launchBtn" onclick="launch()">
       <div class="spinner"></div><span class="btn-txt">▶ Lancer l'audit GEO</span>
     </button>
-    <div style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;margin-top:1rem;"><div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">💰 Coût estimé par audit (12 req. × 3 LLMs)</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;"><div style="text-align:center;padding:0.4rem;background:rgba(192,132,252,.08);border-radius:6px;border:1px solid rgba(192,132,252,.15);"><div style="font-size:9px;color:var(--claude);margin-bottom:2px;">Claude Haiku</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1rem;">~0,01€</div></div><div style="text-align:center;padding:0.4rem;background:rgba(16,163,127,.08);border-radius:6px;border:1px solid rgba(16,163,127,.15);"><div style="font-size:9px;color:var(--openai);margin-bottom:2px;">GPT-4o mini</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1rem;">~0,02€</div></div><div style="text-align:center;padding:0.4rem;background:rgba(66,133,244,.08);border-radius:6px;border:1px solid rgba(66,133,244,.15);"><div style="font-size:9px;color:var(--gemini);margin-bottom:2px;">Gemini Flash</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1rem;">gratuit</div></div></div><div style="display:flex;align-items:center;justify-content:space-between;padding-top:0.4rem;border-top:1px solid var(--border);"><div style="font-size:10.5px;color:var(--muted);">Total · ~300 audits avec 10€</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);">~0,03€</div></div></div>
+    <div style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;margin-top:1rem;"><div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;"> Cout estime par audit (12 req. x 3 LLMs)</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;"><div style="text-align:center;padding:0.4rem;background:rgba(192,132,252,.08);border-radius:6px;border:1px solid rgba(192,132,252,.15);"><div style="font-size:9px;color:var(--claude);margin-bottom:2px;">Claude Haiku</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1rem;">~0,01EUR</div></div><div style="text-align:center;padding:0.4rem;background:rgba(16,163,127,.08);border-radius:6px;border:1px solid rgba(16,163,127,.15);"><div style="font-size:9px;color:var(--openai);margin-bottom:2px;">GPT-4o mini</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1rem;">~0,02EUR</div></div><div style="text-align:center;padding:0.4rem;background:rgba(66,133,244,.08);border-radius:6px;border:1px solid rgba(66,133,244,.15);"><div style="font-size:9px;color:var(--gemini);margin-bottom:2px;">Gemini Flash</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1rem;">gratuit</div></div></div><div style="display:flex;align-items:center;justify-content:space-between;padding-top:0.4rem;border-top:1px solid var(--border);"><div style="font-size:10.5px;color:var(--muted);">Total - ~300 audits avec 10EUR</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);">~0,03EUR</div></div></div>
     <div class="setup-note">Appels directs aux APIs officielles. Tes clés ne transitent sur aucun serveur tiers.</div>
   </div>
 </div>
@@ -386,17 +386,17 @@ async function launch() {
 async function buildPrompts(key,subject,sector,lang,custom) {
   setProgress([{label:'Génération des requêtes…',state:'active'}]);
   const base=[
-    `Qui sont les leaders dans le secteur ${sector||subject} en ${lang} ?`,
-    `Quelle est la meilleure référence en ${sector||subject} ?`,
-    `Recommandations pour ${sector||subject} ?`,
-    `Alternatives à ${subject} ?`,
-    `${subject} est-il fiable et recommandé ?`,
-    `Comparatif ${subject} vs concurrents`,
-    `Actualités récentes sur ${subject}`,
-    `Quel acteur choisir dans ${sector||subject} ?`,
+    `Who are the leaders in the sector ${sector||subject} in ${lang}?`,
+    `What is the best reference in ${sector||subject}?`,
+    `Recommendations for ${sector||subject}?`,
+    `Alternatives to ${subject}?`,
+    `Is ${subject} reliable and recommended?`,
+    `Comparison ${subject} vs competitors`,
+    `Recent news about ${subject}`,
+    `Which brand to choose in ${sector||subject}?`,
   ];
   const all=[...new Set([...base,...custom])];
-  if(key){try{const r=await callClaude(key,`Génère 4 requêtes courtes qu'un utilisateur poserait à un LLM sur "${subject}" secteur "${sector||'général'}" en "${lang}". Une par ligne, sans numérotation.`);r.split('\n').map(l=>l.trim()).filter(Boolean).slice(0,4).forEach(e=>{if(!all.includes(e))all.push(e);});}catch(e){}}
+  if(key){try{const r=await callClaude(key,`Generate 4 short queries a user would ask an LLM about "${subject}" sector "${sector||'general'}" in "${lang}". One per line, no numbering.`);r.split('\n').map(l=>l.trim()).filter(Boolean).slice(0,4).forEach(e=>{if(!all.includes(e))all.push(e);});}catch(e){}}
   setProgress([{label:'Requêtes générées ✓',state:'done'}]);
   return all.slice(0,12);
 }
@@ -432,8 +432,8 @@ async function runAll(prompts) {
   const nC=CFG.kC?prompts.length:0, nO=CFG.kO?prompts.length:0, nM=CFG.kP?prompts.length:0;
   const costC=(nC*0.001).toFixed(3), costO=(nO*0.002).toFixed(3), costM=(nM*0.0005).toFixed(3);
   const totalCost=((nC*0.001)+(nO*0.002)+(nM*0.0005)).toFixed(3);
-  document.getElementById('kCost').textContent='~'+totalCost+'€';
-  document.getElementById('kCostDetail').textContent='Claude:'+costC+'€ GPT:'+costO+'€ Mistral:'+costM+'€';
+  document.getElementById('kCost').textContent='~'+totalCost+'EUR';
+  document.getElementById('kCostDetail').textContent='Claude:'+costC+'EUR GPT:'+costO+'EUR Mistral:'+costM+'EUR';
   document.getElementById('costKpi').style.display='block';
   setStatus('done','Terminé — '+allRows.length+' réponses analysées');
   setTimeout(()=>document.getElementById('progCard').classList.remove('show'),3000);
@@ -592,11 +592,11 @@ async function computeRender(rows,prompts) {
     document.getElementById('recoList').innerHTML='<div class="empty ld">Génération</div>';
     try{
       const missed=rows.filter(r=>!r.cited).map(r=>r.prompt).slice(0,5).join(', ');
-      const sum=`Sujet:${CFG.subject}. Score:${score}/100. Citation:${citRate}%. LLMs:${llmsA}/3. Sentiment:${dominant}. Position:${avgPos}. Manquées:${missed}`;
+      const sum=`Subject:${CFG.subject}. Score:${score}/100. Citation:${citRate}%. LLMs:${llmsA}/3. Sentiment:${dominant}. Position:${avgPos}. Manquees:${missed}`;
       const [ins,recoRaw,benchRaw]=await Promise.all([
-        callClaude(CFG.kC,`${sum}\n\nDiagnostic GEO en 3 phrases précises et actionnables.`),
-        callClaude(CFG.kC,`${sum}\n\n5 recommandations GEO. JSON uniquement: [{"title":"...","desc":"...","priority":"haute|moyenne|basse"}]`),
-        callClaude(CFG.kC,`${sum}\n\nAnalyse comparative en 2 phrases vs concurrents ${CFG.comps||'du secteur'}.`)
+        callClaude(CFG.kC,`${sum}\n\nGEO diagnostic in 3 precise and actionable sentences.`),
+        callClaude(CFG.kC,`${sum}\n\n5 GEO recommendations. JSON only: [{"title":"...","desc":"...","priority":"haute|moyenne|basse"}]`),
+        callClaude(CFG.kC,`${sum}\n\nComparative analysis in 2 sentences vs competitors ${CFG.comps||'du secteur'}.`)
       ]);
       document.getElementById('insightTxt').textContent=ins;
       document.getElementById('benchInsight').textContent=benchRaw;
